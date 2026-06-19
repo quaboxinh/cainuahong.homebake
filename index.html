@@ -207,18 +207,11 @@ body.edit-mode .editable:focus { background: rgba(232,160,32,.28); box-shadow: 0
 /* ═══════════════════════════════════════
    FILTER BAR
 ═══════════════════════════════════════ */
-.filter-bar {
-  padding: .8rem 2rem; border-bottom: 1.5px solid var(--cream3);
-  display: flex; align-items: center; gap: 7px; flex-wrap: wrap;
-  position: sticky; top: 60px; background: var(--cream); z-index: 200;
-}
+
 .fl { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .1em; color: var(--ink3); margin-right: 4px; }
-.f-btn {
-  font-family: var(--font); font-size: 12px; font-weight: 500; padding: 5px 14px; border-radius: 20px;
-  border: 1.5px solid var(--cream3); background: transparent; color: var(--ink2); cursor: pointer; transition: all var(--t);
-}
-.f-btn:hover { border-color: var(--navy); color: var(--navy); }
-.f-btn.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
+
+
+
 .btn-add-product {
   margin-left: auto; font-family: var(--font); font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 20px;
   border: 1.5px solid var(--navy); background: none; color: var(--navy); cursor: pointer; display: none; align-items: center; gap: 5px; transition: all var(--t);
@@ -262,6 +255,8 @@ body.edit-mode .btn-add-product { display: flex; }
 .c-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: none; }
 .c-img img.loaded { display: block; }
 .c-ph { display: flex; flex-direction: column; align-items: center; gap: 5px; pointer-events: none; }
+body:not(.edit-mode) .c-img:not(.has-img) .c-ph { display: none; }
+body:not(.edit-mode) .c-img:not(.has-img) { aspect-ratio: unset; min-height: 0; height: 0; border: none; background: none; }
 .c-ph svg { width: 20px; height: 20px; stroke: var(--ink3); fill: none; stroke-width: 1.5; }
 .c-ph span { font-size: 10px; color: var(--ink3); }
 .c-img.has-img .c-ph { display: none; }
@@ -367,7 +362,7 @@ body.edit-mode .ft-editable:focus { background: rgba(232,160,32,.25); outline: n
   .hero { grid-template-columns: 1fr; }
   .hero-left { padding: 2rem 1.25rem; border-right: none; border-bottom: 1.5px solid var(--cream3); }
   .hero-right { min-height: 220px; }
-  .filter-bar { padding: .6rem 1rem; top: 56px; }
+  
   .section, .addon-sec { }
   .sec-hdr { padding: 1.2rem 1rem .4rem; }
   .p-grid { grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); }
@@ -850,20 +845,6 @@ body.edit-mode .ft-editable:focus { background: rgba(232,160,32,.25); outline: n
 </section>
 
 <!-- FILTER + ADD -->
-<div class="filter-bar">
-  <span class="fl">Lọc</span>
-  <button class="f-btn active" onclick="setFilter('all',this)">Tất cả</button>
-  <button class="f-btn" onclick="setFilter('cheesecake',this)">Cheesecake</button>
-  <button class="f-btn" onclick="setFilter('mousse',this)">Mousse</button>
-  <button class="f-btn" onclick="setFilter('tiramisu',this)">Tiramisu</button>
-  <button class="f-btn" onclick="setFilter('burnt',this)">Burnt</button>
-  <button class="f-btn" onclick="setFilter('mini',this)">Mini / Ly</button>
-  <button class="btn-add-product" onclick="openModal('addModal')">
-    <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-    Thêm bánh
-  </button>
-</div>
-
 <!-- SEARCH BANNER -->
 <div class="s-banner" id="sBanner">
   <span id="sBannerTxt">Tìm thấy 25 sản phẩm cho "c"</span>
@@ -1288,9 +1269,6 @@ let PRODUCTS = [
   {id:21, name:'Basque Burnt Cheesecake',   size:'Miếng',  unit:'Miếng',  price:69000,  cat:['burnt','cheesecake','mini']},
   {id:22, name:'Basque Burnt Cheesecake',   size:'14cm',   unit:'Ổ',      price:325000, cat:['burnt','cheesecake']},
   {id:23, name:'Basque Burnt Cheesecake',   size:'18cm',   unit:'Ổ',      price:525000, cat:['burnt','cheesecake']},
-  {id:24, name:'Rum Mận Cheesecake',        size:'Mini',   unit:'Ly',     price:69000,  cat:['cheesecake','mini']},
-  {id:25, name:'Rum Mận Cheesecake',        size:'10cm',   unit:'Ổ',      price:220000, cat:['cheesecake']},
-  {id:26, name:'Rum Mận Cheesecake',        size:'14cm',   unit:'Ổ',      price:395000, cat:['cheesecake']},
   {id:27, name:'Matcha Tiramisu',           size:'',       unit:'Hộp',    price:95000,  cat:['tiramisu','mini']},
   {id:28, name:'Earl Grey Tiramisu',        size:'',       unit:'Hộp',    price:95000,  cat:['tiramisu','mini']},
   {id:29, name:'Pistachio Burnt Cheesecake',size:'Slice',  unit:'Miếng',  price:75000,  cat:['burnt','cheesecake','mini']},
@@ -1307,8 +1285,9 @@ const ADDONS = [
 /* ════ STATE ════ */
 let visP = new Set(PRODUCTS.map(p=>p.id));
 let visA = new Set(ADDONS.map(a=>a.id));
-let editMode = false, curFilter = 'all', searchQ = '';
+let editMode = false, searchQ = '';
 let pImgs = {};
+
 
 /* ════ UTILS ════ */
 const fmt = n => Number(n).toLocaleString('vi-VN') + '\u00A0đ';
@@ -1325,8 +1304,7 @@ function render(){
   let html = '', found = 0;
 
   const filtered = PRODUCTS.filter(p =>
-    (curFilter==='all' || p.cat.includes(curFilter)) &&
-    (!q || p.name.toLowerCase().includes(q) || p.size.toLowerCase().includes(q))
+    !q || p.name.toLowerCase().includes(q) || p.size.toLowerCase().includes(q)
   );
   found = filtered.length;
 
@@ -1396,13 +1374,8 @@ function deleteP(id){
   if(!confirm('Xoá sản phẩm này?')) return;
   PRODUCTS=PRODUCTS.filter(p=>p.id!==id); visP.delete(id); render();
 }
-function setFilter(cat,btn){
-  curFilter=cat; document.querySelectorAll('.f-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active');
-  searchQ=''; document.getElementById('sInput').value=''; document.getElementById('sClear').style.display='none'; render();
-}
 function doSearch(v){
   searchQ=v; document.getElementById('sClear').style.display=v?'flex':'none';
-  if(v){ document.querySelectorAll('.f-btn').forEach(b=>b.classList.remove('active')); document.querySelector('.f-btn').classList.add('active'); curFilter='all'; }
   render();
   if(v){ setTimeout(()=>{ const c=document.querySelector('.p-card:not(.gone)'); if(c){ c.scrollIntoView({behavior:'smooth',block:'center'}); c.classList.add('jump'); setTimeout(()=>c.classList.remove('jump'),800); } },60); }
 }
@@ -1428,7 +1401,6 @@ function toggleEdit(){
 
 /* ════ IMAGE PICK ════ */
 function pickImg(id){
-  if(!editMode) return;
   const inp=document.createElement('input'); inp.type='file'; inp.accept='image/*';
   inp.onchange=e=>{
     const f=e.target.files[0]; if(!f) return;
