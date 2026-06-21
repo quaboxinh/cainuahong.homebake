@@ -1137,19 +1137,29 @@ body.edit-mode .ft-editable:focus { background: rgba(232,160,32,.25); outline: n
         <span class="sec-name"> Pornstar Martini Mousse</span>
         <span class="sec-cnt">1 kích cỡ</span>
       </div>
-      <div class="p-grid"><div class="p-card " id="pc-21">
-        <button class="vis-btn " onclick="toggleP(21)" title="Ẩn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></button>
-        <button class="del-btn" onclick="deleteP(21)" title="Xoá sản phẩm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14H6L5 6"></path><path d="M10 11v6M14 11v6"></path></svg></button>
-        <div class="c-img has-img" onclick="pickImg(21)">
-          <div class="c-ph"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg><span>Thêm ảnh</span></div>
-         <iframe src="https://drive.google.com/file/d/1_-UspttH3W9I8b3com3M7yjEUL5Sf2q1/preview" width="3024" height="4032" allow="autoplay"></iframe>
+      <div class="c-img has-img" onclick="pickImg(21)">
+  <div class="c-ph">
+    <svg viewBox="0 0 24 24">
+      <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+      <circle cx="8.5" cy="8.5" r="1.5"></circle>
+      <polyline points="21 15 16 10 5 21"></polyline>
+    </svg>
+    <span>Thêm ảnh</span>
+  </div>
+  <img 
+    src="images/chanhleocheese.jpg"
+    alt="Cheesecake chanh leo"
+    style="width:100%; height:100%; object-fit:cover;"
+  >
+</div>
+Lưu ý: file ảnh phải nằm trong thư mục images/ trong repo. Nếu bạn để ảnh ở thư mục khác thì cho mình biết để chỉnh đường dẫn src lại.
         </div>
-        <div class="c-name"> Seasonal: Pornstar Martini Mousse </div>
-        <div class="c-meta">Cup - Vodka, Chanh dây, Vani, Whipping Cream </div>
+        <div class="c-name"> Pornstar Martini Mousse </div>
+        <div class="c-meta">Cup . Vodka, Chanh dây, Vani, Whipping cream </div>
         <div class="c-price">75.000&nbsp;đ</div>
     
       </div></div></section><section class="section" id="g-Earl\ Grey\ Tiramisu">
-      <div class="sec-hdr">
+      <div class="sec-hdr"
         <span class="sec-name">Earl Grey Tiramisu</span>
         <span class="sec-cnt">1 kích cỡ</span>
       </div>
@@ -1295,6 +1305,7 @@ let PRODUCTS = [
   {id:21, name:'Basque Burnt Cheesecake',   size:'Miếng',  unit:'Miếng',  price:69000,  cat:['burnt','cheesecake','mini']},
   {id:22, name:'Basque Burnt Cheesecake',   size:'14cm',   unit:'Ổ',      price:325000, cat:['burnt','cheesecake']},
   {id:23, name:'Basque Burnt Cheesecake',   size:'18cm',   unit:'Ổ',      price:525000, cat:['burnt','cheesecake']},
+  {id:24, name:'Pornstar Martini Mousse',   size:'Mini',   unit:'Cup',    price:75000, cat:['Mousse']},
   {id:27, name:'Matcha Tiramisu',           size:'',       unit:'Hộp',    price:95000,  cat:['tiramisu','mini']},
   {id:28, name:'Earl Grey Tiramisu',        size:'',       unit:'Hộp',    price:95000,  cat:['tiramisu','mini']},
   {id:29, name:'Pistachio Burnt Cheesecake',size:'Slice',  unit:'Miếng',  price:75000,  cat:['burnt','cheesecake','mini']},
@@ -1324,6 +1335,7 @@ function groupBy(arr, k){ const o={}; arr.forEach(i=>{(o[i[k]]=o[i[k]]||[]).push
 function hlText(s,q){ if(!q) return s; return s.replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`,'gi'),'<mark class="hl">$1</mark>'); }
 
 /* ════ RENDER ════ */
+
 function render(){
   const main = document.getElementById('main');
   const q = searchQ.toLowerCase().trim();
